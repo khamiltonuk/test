@@ -1,27 +1,27 @@
 //Share tooltip
 (function ($) {
     $.fn.shareTooltip = function (options) {
-        
+
         var settings = $.extend({
             'element': $(this),
-            'duration': 500,
-            'direction' : 'up'
+                'duration': 500,
+                'direction': 'up'
         }, options);
-        popbox = function($el){
-            $el.show()
+        popbox = function ($el) {
+            $el.show();
         },
-        hidebox = function($el){
-            $el.delay(settings.duration).fadeOut()
+        hidebox = function ($el) {
+            $el.delay(settings.duration).fadeOut();
             //console.log(settings.duration);
         },
-        init = function(){
+        init = function () {
             box = settings.element.find('.pop-up');
-            settings.element.hover(function(){
+            settings.element.hover(function () {
                 popbox(box);
-            }, function(){
+            }, function () {
                 hidebox(box);
             });
-        }
+        };
         return init();
     };
 
@@ -37,7 +37,7 @@
                 amount_slides = $carousel_elements.size(),
                 slides = ($carousel_elements.size() - 1),
                 inner_width = amount_slides * item_width;
-                //console.log(item_width);
+            //console.log(item_width);
 
 
             var rebeccasPicks = function () {
@@ -59,26 +59,26 @@
                     }
                 }
 
-            $$('#main-image').css({
-                'width': inner_width
-            });
+                $$('#main-image').css({
+                    'width': inner_width
+                });
 
-            $('#next').click(function () {
-                if (count >= 0 && count < slides) {
-                    movement(++count);
-                }
-            });
+                $('#next').click(function () {
+                    if (count >= 0 && count < slides) {
+                        movement(++count);
+                    }
+                });
 
-            $('#prev').click(function () {
-                if (count <= slides && count >= 1) {
-                    movement(--count);
-                }
-            });
-            console.log('3');
+                $('#prev').click(function () {
+                    if (count <= slides && count >= 1) {
+                        movement(--count);
+                    }
+                });
+                console.log('3');
+            };
         };
+        return rebecca();
     };
-    return rebecca();
-};
 })(jQuery);
 
 
@@ -90,45 +90,45 @@
 
         var settings = $.extend({
             'api_key': '6591bac6b104953cb9e6944a5b65b509',
-            'defaultSearchTerm' : 'dad'
+                'defaultSearchTerm': 'dad'
         }, options);
-        
-        getSearchValue = function(){
-            $('#search-submit').click(function(event){
+
+        getSearchValue = function () {
+            $('#search-submit').click(function (event) {
                 searchValue = $('#search').val();
                 $('#what-you-want').html(searchValue);
                 getImages(searchValue);
                 event.preventDefault();
             });
         },
-        updateMainimage = function(imageSrc){
+        updateMainimage = function (imageSrc) {
             newimage = '<li class="active"><img src="' + image_src + '" />';
             $('#main-image').append(newimage);
             $('#main-image').find('.active').siblings().remove();
         },
-        updateThumbnailsCurrent = function(newThumb){
+        updateThumbnailsCurrent = function (newThumb) {
 
         },
-        getImages = function(searchTerm){
+        getImages = function (searchTerm) {
             $.getJSON(url, {
                 method: 'flickr.photos.search',
                 api_key: settings.api_key,
                 media: 'photos',
-                tags: 'dad',//searchTerm,
+                tags: 'dad', //searchTerm,
                 per_page: 15,
                 format: 'json',
                 extras: 'url_q,url_l',
-                nojsoncallback: 1,
+                nojsoncallback: 1
             }).success(function (state) {
                 var list = $('#thumbnails ul'),
                     viewport = $('#main-image');
                 list.html('');
                 viewport.html(' ');
                 $.each(state.photos.photo, function () {
-                //(this.isprimary == "1") {
-                    viewport.append('<li><img src="' + this.url_l + '" /></li>');//<div class="image-info">' + this.title + '<br />' + this.tags + '</div>');
+                    //(this.isprimary == "1") {
+                    viewport.append('<li><img src="' + this.url_l + '" /></li>'); //<div class="image-info">' + this.title + '<br />' + this.tags + '</div>');
                     list.append('<li><a href="' + this.url_l + '"><img src="' + this.url_q + '" ' + 'data-title="' + this.title + '" ' + 'data-url="' + this.url_l + '" /></a></li>');
-                
+
                 });
                 list.find('li:first-child a').addClass('current');
                 viewport.find('li:first-child a').addClass('current');
@@ -136,35 +136,35 @@
             }).fail(function (state) {
                 alert("unable to retrieve photo set information");
             });
-        }, 
-        thumbnailsEventHandler = function(){
-            $('#thumbnails').on('click', 'a', function(event){
+        },
+        thumbnailsEventHandler = function () {
+            $('#thumbnails').on('click', 'a', function (event) {
                 $('#thumbnails li a').removeClass('current');
                 event.preventDefault();
-                $(this).addClass('current'); 
+                $(this).addClass('current');
                 image_src = $(this).attr('href');
             });
         },
-        nextimage = function(){
-            $('#next').on('click', function(e){
-                next_image = $('#thumbnails li a').hasClass('.current');//.parent().next().find('a').attr('href');
+        nextimage = function () {
+            $('#next').on('click', function (e) {
+                next_image = $('#thumbnails li a').hasClass('.current'); //.parent().next().find('a').attr('href');
                 alert(next_image);
             });
-        }
-        init = function(){
+        },
+        init = function () {
             thumbnailsEventHandler();
             getSearchValue();
             //updateMainimage();
             //console.log(settings.defaultSearchTerm);
             getImages();
-        }
-        return init(); 
+        };
+        return init();
 
     };
 
 })(jQuery);
 
-$(document).on('ready', function () {  
+$(document).on('ready', function () {
     $('.js-share').shareTooltip();
     $('#main-image').slideCarousel();
     $('div#thumbnails').searchFlickr();
