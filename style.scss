@@ -1,0 +1,254 @@
+/***VARIABLES********/
+
+$link-base:         #660800;
+$highlight:         #fcb712;
+$ajax-loader-icon:  #000 center center no-repeat url('img/ajax-loader.gif');
+/*******************/
+
+body {
+	background: url('img/bkg.gif') repeat-x 0 140px #000;
+	color: #fff;
+    margin: 0;
+}
+
+input  {
+	-webkit-appearance: none;
+}
+header {
+    height: 140px;
+}
+
+h1 {
+    font-size: 58px;
+	color: $highlight;
+    float: left;
+    margin: 35px 0 0;
+}
+.center-wrap {
+	width: 911px;
+	margin: 0 auto;
+}
+.thick-border-bottom {
+    border-bottom: 5px solid #fff;
+}
+
+/*** Search box *******************/
+.search-box {
+	width: 352px;
+	background: #fff;
+	height: 29px;
+
+    margin-top: 55px;
+	position: relative;
+	overflow: hidden;
+}
+.search-box input {
+	height: 24px;
+    margin: 3px;
+	border: none;
+	width: 100%;
+    width: calc(100% - 39px);
+}
+.search-box label {
+	position: absolute;
+	left: 100%;
+}
+.search-box button {
+	position: absolute;
+    text-indent: -999em;
+    border: none;
+    background : url('img/search-icon.gif') #fff no-repeat center center;
+    height: 29px;
+    width: 29px;
+	right: 0;
+	top: 0;
+} 
+/*** MAIN WINDOW *******************/
+.main-window {
+	height: 505px;
+	position: relative;
+	width: 100%;
+    overflow: hidden;
+    height: 505px;
+    width: 911px;
+    background: $ajax-loader-icon;
+    ul {
+        list-style: none;
+        margin: 0;
+        position: absolute;
+        padding: 0;
+        li{
+            float: left;
+            margin: 0;
+            padding: 0;
+            background: red;
+            img {
+            }
+        }
+    }
+}
+.main-window-footer {
+    position: relative;
+    text-align: center;
+}
+.arrow {
+	width: 58px;
+    border-radius: 29px;
+	height: 58px;
+	position: absolute;
+    overflow: hidden;
+	top: 50%;
+	margin-top: -29px;
+	background: #000;
+	background: rgba(0,0,0,0.5);
+    &:hover{
+        background: #000;
+    }
+}
+.arrow img {
+    //apologies margin hack as i didnt want to generate images for arrows
+    margin-top: -13px;
+}
+.arrow-next {
+	right: 11px;
+    img {
+        margin-left: -7px;
+    }
+}
+.arrow-prev {
+	left: 11px;
+    img {
+        margin-left: -14px;
+    }
+}
+/*** THUMBNAILS *******************/
+.thumbnails-grid ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    li {
+        float: left;
+        margin: 0 19px 11px 0;
+        height: 167px;
+        width: 167px;
+        background: $ajax-loader-icon;
+        img {
+            height: 100%;
+            width: 100%;
+        }
+        &:nth-child(5n+5) {  
+          margin-right: 0;
+        }
+        a{
+            display: block;
+            line-height: 0;
+            border: 1px solid #000;
+            &:hover,
+            &.current{
+            border: 1px solid $highlight;
+            }
+        }
+    }
+}
+/*** PAGENATION *******************/
+.pagnation {
+    padding: 10px 0;
+    span,
+    ul,
+    li {
+        display: inline-block;
+    }
+    ul {
+        margin: 0;
+        padding: 0;
+        li {
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    
+    a{
+        color: #fff;
+        text-decoration: none;
+        &:hover{
+            color:$highlight;
+            text-decoration: underline;
+        }
+    }
+}
+.pagnation-footer {
+    margin: 0 0 111px;
+}
+
+/*** SHARE TOOLTIP *******************/
+.share-wrap {
+    position: absolute;
+    cursor: pointer;
+    background: $link-base;
+    text-transform: uppercase;
+    padding: .5em 0;
+    margin: 1em 0 0;
+    color: $highlight;
+    display: block;
+    width: 80px;
+    bottom: 0;
+    right: 0;
+}
+.pop-up {
+    top: -71px;
+    position: absolute;
+    display: none;
+    width: 124px;
+    right: 0;
+    padding:0 0  10px ;
+
+    .pop-up-container {
+       background: $link-base;
+        height: 60px;
+    }
+    .social {
+        width: 20px;
+        background: #ccc;
+        height: 40px;
+        float: left;
+        margin: 10px;
+    }
+    &:after {
+        content:" ";
+        position: absolute;
+        bottom: 0px ;
+        right: 30px;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid $link-base;
+    }
+}
+
+/*** TOOL BOX *******************/
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+.hide-out {
+	position: absolute;
+	left: 100%;
+}
+.hide-text {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
