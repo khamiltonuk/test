@@ -49,14 +49,14 @@
             $('#prev, #next').removeClass('disabled');
             $carousel_elements.removeClass('current');
             thumbnails_links.removeClass('current');
-            var distance = item_width * count,
-                indie_bar_distance = ((count - 1) * 36 + 3);
+            
+            var distance = item_width * count;
             if (animate === false){
                 settings.element.css({
                     'left': -distance
                 });
             }else{
-                settings.element.animate({
+                settings.element.stop(true,true).animate({
                     'left': -distance
                 }, settings.animationDuration );
             }
@@ -65,7 +65,7 @@
             currentSlide.addClass('current');
             $('#thumbnails li').eq(count).find('a').addClass('current');
 
-            setOwnerText(currentSlide)
+            setOwnerText(currentSlide);
 
             if (count === 0) {
                 $('#prev').addClass('disabled');
@@ -99,9 +99,6 @@
     };
 })(jQuery);
 
-//center images
-var resize = {};
-
 function setOwnerText(image){
     var ownerName = image.find('img').data("ownername");
     if (ownerName){
@@ -119,7 +116,9 @@ function setOwnerText(image){
             gallery = $(this);
 
         var settings = $.extend({
-            'api_key': '6eada3f33715e9c7005d6e278e98cb2c'
+            'api_key': '6eada3f33715e9c7005d6e278e98cb2c',
+            'imagesRequired' : 15, //CSS supports numbers divisable by 5
+            'defaultSearchTerm' : "glastonbury" 
         }, options);
 
         getSearchValue = function () {
@@ -131,44 +130,44 @@ function setOwnerText(image){
             });
         },
         getImages = function (searchTerm) {
-            
-        $('#message').html('Please wait...').fadeIn();
-            $.getJSON(url, {
-                method: 'flickr.photos.search',
-                api_key: settings.api_key,
-                media: 'photos',
-                tags: searchTerm,
-                per_page: 15,
-                format: 'json',
-                extras: 'url_q,url_l,owner_name,',
-                nojsoncallback: 1
-            }).success(function (state) {
-                var list = $('#thumbnails ul'),
-                    viewport = $('#main-image');
-                list.html('');
-                viewport.html(' ');
-                $.each(state.photos.photo, function () {
-                    viewport.append('<li><img src="' + this.url_l + '" alt="' + this.title + '" data-ownername="' + this.ownername + '"/></li>'); 
-                    list.append('<li><a href="' + this.url_l + '"><img src="' + this.url_q + '" ' + 'data-title="' + this.title + '" ' + 'data-url="' + this.url_l + '" /></a></li>');
+            $('#message').html('Please wait...').fadeIn();
+                $.getJSON(url, {
+                    method: 'flickr.photos.search',
+                    api_key: settings.api_key,
+                    media: 'photos',
+                    tags: searchTerm,
+                    per_page: settings.imagesRequired,
+                    format: 'json',
+                    extras: 'url_q,url_l,owner_name,',
+                    nojsoncallback: 1
+                }).success(function (state) {
+                    var list = $('#thumbnails ul'),
+                        viewport = $('#main-image');
+                    list.html('');
+                    viewport.html(' ');
+                    $.each(state.photos.photo, function () {
+                        viewport.append('<li><img src="' + this.url_l + '" alt="' + this.title + '" data-ownername="' + this.ownername + '"/></li>'); 
+                        list.append('<li><a href="' + this.url_l + '"><img src="' + this.url_q + '" ' + 'data-title="' + this.title + '" ' + 'data-url="' + this.url_l + '" /></a></li>');
+                    });
+                    $('#message').fadeOut().html(' ');
+
+                    $('#main-image').slideCarousel();
+
+                    list.find('li:first-child a').addClass('current');
+                    var firstImage = viewport.find('li:first-child');
+                    
+                    firstImage.addClass('current');
+                    setOwnerText(firstImage);
+
+                }).fail(function (state) {
+                    $('#message').html('oops something has gone wrong').fadeIn();
                 });
-                $('#message').fadeOut().html(' ');
-
-                $('#main-image').slideCarousel();
-
-                list.find('li:first-child a').addClass('current');
-                var firstImage = viewport.find('li:first-child');
-                
-                firstImage.addClass('current');
-                setOwnerText(firstImage);
-            }).fail(function (state) {
-                $('#message').html('oops something has gone wrong').fadeIn();
-            });
-        },
-        init = function () {
-            oname = document.getElementById('description');
-            oname.style.display = 'none';
-            getSearchValue();
-            getImages('mum');
+            },
+            init = function () {
+                var oname = document.getElementById('description');
+                oname.style.display = 'none';
+                getSearchValue();
+                getImages(settings.defaultSearchTerm);
         };
         return init();
 
