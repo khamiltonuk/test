@@ -9,9 +9,11 @@
 <body>
 	<div class="center-wrap">
 		<header>
+			<p id="message"></p>
 			<h1 id="what-you-want">hello world</h1>
+
 			<div class="search-box pull-right">
-				<form form id="search_mini_form" >
+				<form id="search_mini_form" >
 					<label for="search">search</label>
 					<input type="search" name="search" id="search" class="input-text search" placeholder="Search" autocomplete="off"> 
 					<button type="submit" id="search-submit">search</button>
@@ -20,17 +22,18 @@
 		</header>
 		<section>
 			<div id="frame" class="main-window">
-				<a id="next" class="arrow arrow-next"><span class="hide-out">next</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE8AAABPBAMAAABYGoW1AAAAA3NCSVQICAjb4U/gAAAAMFBMVEX///////////////////////////////////////////////////////////////9Or7hAAAAAEHRSTlMAESIzRFVmd4iZqrvM3e7/dpUBFQAAAAlwSFlzAAAOdAAADnQBaySz1gAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADfSURBVEiJ7dQ9DoJAFARgiEQKY7DUjiPY23AET2A4gl6AxBMYT2DiEfQANvY0egUtLf1BeBJG6pnYulN/ednNzj7Pc3Fx+TWBCqOtCqu5CO2diNAeAxHaRYW2U6EtVFgmFPYbaK+YQX8FeaUjOwfII5XdG+SSyiFglVI5gSxiKjPIO31LfwN5oiODHJKXM8TVhXKOMJKXsx2ZiodcEydfOxOboT7N97HLKXFqfdpC7omTKz6De7Lm9Ez8hpFaBkBhVTTwzF0DpXVWw2IsuBqKKzeiFWwh/3lIKDoXl3/OB6lt29BmFBP5AAAAAElFTkSuQmCC" alt="" style="" /></a>
-				<a id="prev" class="disabled arrow arrow-prev"><span class="hide-out">previous</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE8AAABPBAMAAABYGoW1AAAAA3NCSVQICAjb4U/gAAAAMFBMVEX///////////////////////////////////////////////////////////////9Or7hAAAAAEHRSTlMAESIzRFVmd4iZqrvM3e7/dpUBFQAAAAlwSFlzAAAOdAAADnQBaySz1gAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADtSURBVEiJ7dS9DcJADAXgSwihpYN01NDQ02QAGAGJCRATJGICxARILIAEAzACDdR0UKZC4v8IsVO/V9Bxr/4U2bF9xri4uPwqEenCjHOVraWcl1oODi0H25aDtYyDwc5S0FtYDo7F3ZDriXvGwDXEvSfAVY8C58D5K3F7VGAi7oxcX9y9BVwk7hUDF2Zcw/kKFlmiAlNxF+TKCuFIjBnokOtQ6l88QehrOxsoy0lPoWzq7oyg1G18dKHUhq6w9fJiDvCTgTa0hlKumrnrDguLl4eC3oyEspoMLBqi4Hc5OZgvJwlNwkKfhS4uf5QPlP7bRzgxDtUAAAAASUVORK5CYII=" alt=""  /></a>
+				
 				<ul id="main-image">
 					<!--<li class="active">
 						<img src="http://dummyimage.com/911x505/ccc/000" alt="" />
 					</li>-->
 				</ul>
+				<a id="next" class="arrow arrow-next"><span class="hide-out">next</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE8AAABPBAMAAABYGoW1AAAAA3NCSVQICAjb4U/gAAAAMFBMVEX///////////////////////////////////////////////////////////////9Or7hAAAAAEHRSTlMAESIzRFVmd4iZqrvM3e7/dpUBFQAAAAlwSFlzAAAOdAAADnQBaySz1gAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADfSURBVEiJ7dQ9DoJAFARgiEQKY7DUjiPY23AET2A4gl6AxBMYT2DiEfQANvY0egUtLf1BeBJG6pnYulN/ednNzj7Pc3Fx+TWBCqOtCqu5CO2diNAeAxHaRYW2U6EtVFgmFPYbaK+YQX8FeaUjOwfII5XdG+SSyiFglVI5gSxiKjPIO31LfwN5oiODHJKXM8TVhXKOMJKXsx2ZiodcEydfOxOboT7N97HLKXFqfdpC7omTKz6De7Lm9Ez8hpFaBkBhVTTwzF0DpXVWw2IsuBqKKzeiFWwh/3lIKDoXl3/OB6lt29BmFBP5AAAAAElFTkSuQmCC" alt="" style="" /></a>
+				<a id="prev" class="disabled arrow arrow-prev"><span class="hide-out">previous</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE8AAABPBAMAAABYGoW1AAAAA3NCSVQICAjb4U/gAAAAMFBMVEX///////////////////////////////////////////////////////////////9Or7hAAAAAEHRSTlMAESIzRFVmd4iZqrvM3e7/dpUBFQAAAAlwSFlzAAAOdAAADnQBaySz1gAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADtSURBVEiJ7dS9DcJADAXgSwihpYN01NDQ02QAGAGJCRATJGICxARILIAEAzACDdR0UKZC4v8IsVO/V9Bxr/4U2bF9xri4uPwqEenCjHOVraWcl1oODi0H25aDtYyDwc5S0FtYDo7F3ZDriXvGwDXEvSfAVY8C58D5K3F7VGAi7oxcX9y9BVwk7hUDF2Zcw/kKFlmiAlNxF+TKCuFIjBnokOtQ6l88QehrOxsoy0lPoWzq7oyg1G18dKHUhq6w9fJiDvCTgTa0hlKumrnrDguLl4eC3oyEspoMLBqi4Hc5OZgvJwlNwkKfhS4uf5QPlP7bRzgxDtUAAAAASUVORK5CYII=" alt=""  /></a>
 			</div>
 			<div class="main-window-footer thick-border-bottom cf">
 
-				<p id="description">photographer credit: <span id="description" >Alex de Mora</span></p>
+				<p id="description">photographer credit: <span id="owner-name" >Alex de Mora</span></p>
 				<a class="share-wrap js-share">Share
 				    <div class="pop-up">
 				        <div class="pop-up-container">
@@ -61,7 +64,7 @@
 				</ul>
 			</div>
 			<div id="thumbnails-pagnation" class="thick-border-bottom pagnation-footer cf">
-				<div class="pagnation pull-right">
+				<!--<div class="pagnation pull-right">
 					<span id="first-frame"><a href="" >&lt;&lt;</a></span>
 					<span id="prev-frame"><a href="" >&lt;</a></span>
 						<ul>
@@ -73,7 +76,7 @@
 					<span></span>
 					<span id="next-frame"><a href="" >&gt;</a></span>
 					<span id="last-frame"><a href="" >&gt;&gt;</a></span>
-				</div>
+				</div>-->
 			</div>
 		</section>
 	</div>

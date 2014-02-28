@@ -23,6 +23,7 @@ h1 {
 	color: $highlight;
     float: left;
     margin: 35px 0 0;
+
 }
 .center-wrap {
 	width: 911px;
@@ -31,7 +32,12 @@ h1 {
 .thick-border-bottom {
     border-bottom: 5px solid #fff;
 }
+/*** Header *******************/
+#message {
+    display: none;
+    position: absolute
 
+}
 /*** Search box *******************/
 .search-box {
 	width: 352px;
@@ -75,13 +81,17 @@ h1 {
     ul {
         list-style: none;
         margin: 0;
+
         position: absolute;
         padding: 0;
         li{
             float: left;
             margin: 0;
             padding: 0;
-            background: red;
+
+            height: 505px;
+            width: 911px;
+            background: black;
             img {
             }
         }
@@ -103,6 +113,9 @@ h1 {
 	background: rgba(0,0,0,0.5);
     &:hover{
         background: #000;
+    }
+    &.disabled{
+        opacity: 0.2;
     }
 }
 .arrow img {
