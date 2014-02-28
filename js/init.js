@@ -61,8 +61,11 @@
                 }, settings.animationDuration );
             }
             
-            $carousel_elements.eq(count).addClass('current');
-            $('#thumbnails li a').eq(count).addClass('current');
+            currentSlide = $carousel_elements.eq(count);
+            currentSlide.addClass('current');
+            $('#thumbnails li').eq(count).find('a').addClass('current');
+
+            setOwnerText(currentSlide)
 
             if (count === 0) {
                 $('#prev').addClass('disabled');
@@ -75,24 +78,39 @@
         var mainImage = document.getElementById('main-image');
         mainImage.style.width = inner_width + 'px';
 
-        $('.arrow').on('click', function (event) {
-            if (event.target.id == "next" && count >= 0 && count < slides) {
+        $('#next').on('click', function (event) {
+            if (count >= 0 && count < slides) {
                 movement(++count);
             }
-            if (event.target.id == "prev" && count <= slides && count >= 1) {
+            event.preventDefault();
+        });
+        $('#prev').on('click', function (event) {
+            if (count <= slides && count >= 1) {
                 movement(--count);
             }
             event.preventDefault();
         });
         
         $('#thumbnails').on('click', 'a', function (e) {
-            var thumbsIndex = $(this).parent().index();
-            movement(thumbsIndex, false);
+            count = $(this).parent().index();
+            movement(count, false);
             e.preventDefault();
         });  
     };
 })(jQuery);
 
+//center images
+var resize = {};
+
+function setOwnerText(image){
+    var ownerName = image.find('img').data("ownername");
+    if (ownerName){
+        $('#owner-name').html(ownerName);
+    }else {
+        $('#owner-name').html('Unknown');
+    }
+    $('#description').fadeIn();
+}
 
 //getting the images from flickr
 (function ($) {
@@ -146,15 +164,6 @@
                 $('#message').html('oops something has gone wrong').fadeIn();
             });
         },
-        setOwnerText = function(image){
-            var ownerName = image.find('img').data("ownername");
-            if (ownerName){
-                $('#owner-name').html(ownerName);
-            }else {
-                $('#owner-name').html('Unknown');
-            }
-            $('#description').fadeIn();
-        },
         init = function () {
             oname = document.getElementById('description');
             oname.style.display = 'none';
@@ -168,6 +177,9 @@
 })(jQuery);
 
 document.addEventListener('DOMContentLoaded', function(){
+
+    document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+
     $('.js-share').shareTooltip();
-    $('div#thumbnails').searchFlickr();
+    $('#thumbnails').searchFlickr();
 });

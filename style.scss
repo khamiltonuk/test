@@ -5,6 +5,14 @@ $highlight:         #fcb712;
 $ajax-loader-icon:  #000 center center no-repeat url('img/ajax-loader.gif');
 /*******************/
 
+@mixin transform($value) {
+  -webkit-transform: $value;
+     -moz-transform: $value;
+      -ms-transform: $value;
+       -o-transform: $value;
+          transform: $value;
+}
+
 body {
 	background: url('img/bkg.gif') repeat-x 0 140px #000;
 	color: #fff;
@@ -88,11 +96,16 @@ h1 {
             float: left;
             margin: 0;
             padding: 0;
-
+            position: relative;
+            overflow: hidden;
             height: 505px;
             width: 911px;
             background: black;
             img {
+                left:50%;
+                top: 50%;
+                position:absolute;
+                @include transform(translate(-50%, -50%));
             }
         }
     }
@@ -237,6 +250,12 @@ h1 {
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
         border-top: 10px solid $link-base;
+    }
+}
+
+.no-js{
+    .arrows {
+        display: none;
     }
 }
 
