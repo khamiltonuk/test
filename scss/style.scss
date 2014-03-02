@@ -2,7 +2,7 @@
 
 $link-base:         #660800;
 $highlight:         #fcb712;
-$ajax-loader-icon:  #000 center center no-repeat url('img/ajax-loader.gif');
+$ajax-loader-icon:  #000 center center no-repeat url('../img/ajax-loader.gif');
 /*******************/
 
 @mixin transform($value) {
@@ -14,7 +14,7 @@ $ajax-loader-icon:  #000 center center no-repeat url('img/ajax-loader.gif');
 }
 
 body {
-	background: url('img/bkg.gif') repeat-x 0 140px #000;
+	background: url('../img/bkg.gif') repeat-x 0 140px #000;
 	color: #fff;
     margin: 0;
 }
@@ -81,7 +81,7 @@ a {
 	position: absolute;
     text-indent: -999em;
     border: none;
-    background : url('img/search-icon.gif') #fff no-repeat center center;
+    background : url('../img/search-icon.gif') #fff no-repeat center center;
     height: 29px;
     width: 29px;
 	right: 0;

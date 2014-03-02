@@ -21,5 +21,5 @@ Once the json has succesfully been retrieved I fire the slideCarousel(); which a
 Apologies about my naming conventions, I'm currently reading the book maintainable javascript by nicholas c. zakas.
 
 thing to extend
-* animate when page loaging on pagnation
+* provide error message for user with no javascript
 * auto generate pagnation elements depending on variable
