@@ -1,6 +1,7 @@
 //Share tooltip
 (function ($) {
     $.fn.shareTooltip = function (options) {
+        var popbox, hidebox, init;
 
         var settings = $.extend({
             'element': $(this),
@@ -160,13 +161,10 @@ function setOwnerText(image){
                         viewport.html(' ');
 
                         $.each(state.photos.photo, function () {
+                            this.url_l = this.url_l || 'img/missing-image.jpg';
                             viewport.append('<li><img src="' + this.url_l + '" alt="' + this.title + '" data-ownername="' + this.ownername + '"/></li>'); 
                             list.append('<li><a href="' + this.url_l + '"><img src="' + this.url_q + '" ' + 'data-title="' + this.title + '" ' + 'data-url="' + this.url_l + '" /></a></li>');
                         });
-
-                        console.log(state);
-
-
 
                         $('#message').fadeOut().html(' ');
                         $('#what-you-want').html(searchTerm);
@@ -194,22 +192,23 @@ function setOwnerText(image){
             pagnation = function (searchTerm){
                 var MAX_PAGE = $('#thumbnails-pagnation ul li').length;
 
-
                 $('#thumbnails-pagnation').on('click', 'a', function(event){
 
                 var page = $('#thumbnails-pagnation').find('.current').parent().index();
 
                     
                     if($(this).parent('li')){
-                        var page = $(this).parent('li').index() + 1;
+                        page = $(this).parent('li').index() + 1;
                         getImages(searchTerm,page);
                     }
                     if(event.target.parentNode.id == 'first-frame'){
-                        var page = 1;
+                        page = 1;
                         getImages(searchTerm,1);
                     }
                     if(event.target.parentNode.id == 'last-frame'){
-                        var page = MAX_PAGE;
+                        console.log( MAX_PAGE);
+                        page = MAX_PAGE;
+
                         getImages(searchTerm,MAX_PAGE);
                     }
                     if(event.target.parentNode.id == 'prev-frame' ){
@@ -227,10 +226,10 @@ function setOwnerText(image){
             init = function () {
                 var oname = document.getElementById('description');
 
-                pagnation();
                 oname.style.display = 'none';
                 getImages(searchTerm,page);
                 getSearchValue();
+                //pagnation();
         };
         return init();
 
