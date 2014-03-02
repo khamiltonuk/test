@@ -7,6 +7,7 @@
             'duration': 500,
             'direction': 'up'//I probably would extend this an test if tool tip was in the viewport
         }, options);
+
         popbox = function ($el) {
             $el.show();
         },
@@ -32,25 +33,29 @@
     $.fn.slideCarousel = function (options) {
         var settings = $.extend({
             'element': $(this),
-            'animationDuration': 500,
+            'animationDuration': 400,
             'direction': 'up'
         }, options);
 
         var count = 0,
-            $carousel_elements = settings.element.find('li'),
+            carousel_elements = settings.element.find('li'),
             item_width = $('#frame').outerWidth(),
             distance = 0,
-            amount_slides = $carousel_elements.length,
-            slides = $carousel_elements.length - 1,
+            amount_slides = carousel_elements.length,
+            slides = carousel_elements.length - 1,
             inner_width = amount_slides * item_width,
             thumbnails_links = $('#thumbnails li a');
+            
 
         function movement(count,animate) {
             $('#prev, #next').removeClass('disabled');
-            $carousel_elements.removeClass('current');
+            carousel_elements.removeClass('current');
             thumbnails_links.removeClass('current');
             
             var distance = item_width * count;
+
+            if(typeof(animate)==='undefined') animate = true;
+
             if (animate === false){
                 settings.element.css({
                     'left': -distance
@@ -61,7 +66,7 @@
                 }, settings.animationDuration );
             }
             
-            currentSlide = $carousel_elements.eq(count);
+            currentSlide = carousel_elements.eq(count);
             currentSlide.addClass('current');
             $('#thumbnails li').eq(count).find('a').addClass('current');
 
@@ -76,6 +81,7 @@
         }
 
         var mainImage = document.getElementById('main-image');
+
         mainImage.style.width = inner_width + 'px';
 
         $('#next').on('click', function (event) {
@@ -100,11 +106,12 @@
 })(jQuery);
 
 function setOwnerText(image){
-    var ownerName = image.find('img').data("ownername");
+    var ownerName = image.find('img').data("ownername"),
+        ownerNameElement = $('#owner-name');
     if (ownerName){
-        $('#owner-name').html(ownerName);
+        ownerNameElement.html(ownerName);
     }else {
-        $('#owner-name').html('Unknown');
+        ownerNameElement.html('Unknown');
     }
     $('#description').fadeIn();
 }
@@ -112,24 +119,26 @@ function setOwnerText(image){
 //getting the images from flickr
 (function ($) {
     $.fn.searchFlickr = function (options) {
-        var url = 'http://api.flickr.com/services/rest/',
-            gallery = $(this);
-
         var settings = $.extend({
             'api_key': '6eada3f33715e9c7005d6e278e98cb2c',
             'imagesRequired' : 15, //CSS supports numbers divisable by 5
             'defaultSearchTerm' : "glastonbury" 
         }, options);
 
+        var url = 'http://api.flickr.com/services/rest/',
+            gallery = $(this),
+            page = 1,
+            searchTerm = settings.defaultSearchTerm;
+
         getSearchValue = function () {
             $('#search-submit').click(function (event) {
-                var searchValue = $('#search').val();
-                $('#what-you-want').html(searchValue);
-                getImages(searchValue);
+                var searchTerm = $('#search').val();
+                getImages(searchTerm, 1);
                 event.preventDefault();
             });
         },
-        getImages = function (searchTerm) {
+        getImages = function (searchTerm,page) {
+
             $('#message').html('Please wait...').fadeIn();
                 $.getJSON(url, {
                     method: 'flickr.photos.search',
@@ -139,35 +148,89 @@ function setOwnerText(image){
                     per_page: settings.imagesRequired,
                     format: 'json',
                     extras: 'url_q,url_l,owner_name,',
-                    nojsoncallback: 1
+                    nojsoncallback: 1,
+                    page : page 
                 }).success(function (state) {
-                    var list = $('#thumbnails ul'),
-                        viewport = $('#main-image');
-                    list.html('');
-                    viewport.html(' ');
-                    $.each(state.photos.photo, function () {
-                        viewport.append('<li><img src="' + this.url_l + '" alt="' + this.title + '" data-ownername="' + this.ownername + '"/></li>'); 
-                        list.append('<li><a href="' + this.url_l + '"><img src="' + this.url_q + '" ' + 'data-title="' + this.title + '" ' + 'data-url="' + this.url_l + '" /></a></li>');
-                    });
-                    $('#message').fadeOut().html(' ');
+                    if (state.photos.photo.length > 0){
 
-                    $('#main-image').slideCarousel();
+                        var list = $('#thumbnails ul'),
+                            viewport = $('#main-image');
 
-                    list.find('li:first-child a').addClass('current');
-                    var firstImage = viewport.find('li:first-child');
-                    
-                    firstImage.addClass('current');
-                    setOwnerText(firstImage);
+                        list.html('');
+                        viewport.html(' ');
+
+                        $.each(state.photos.photo, function () {
+                            viewport.append('<li><img src="' + this.url_l + '" alt="' + this.title + '" data-ownername="' + this.ownername + '"/></li>'); 
+                            list.append('<li><a href="' + this.url_l + '"><img src="' + this.url_q + '" ' + 'data-title="' + this.title + '" ' + 'data-url="' + this.url_l + '" /></a></li>');
+                        });
+
+                        console.log(state);
+
+
+
+                        $('#message').fadeOut().html(' ');
+                        $('#what-you-want').html(searchTerm);
+                        $('#main-image').slideCarousel();
+
+                        $('#thumbnails-pagnation a').removeClass('current');
+
+                        list.find('li:first-child a').addClass('current');
+                        var firstImage = viewport.find('li:first-child');
+                        firstImage.addClass('current');
+
+                        $('#thumbnails-pagnation ul li').eq(page - 1).find('a').addClass('current');
+                        
+                        setOwnerText(firstImage);
+              
+                    }else{
+                        $('#message').html('no results found for' + searchTerm + ', please try again');
+                    }
+
 
                 }).fail(function (state) {
                     $('#message').html('oops something has gone wrong').fadeIn();
                 });
             },
+            pagnation = function (searchTerm){
+                var MAX_PAGE = $('#thumbnails-pagnation ul li').length;
+
+
+                $('#thumbnails-pagnation').on('click', 'a', function(event){
+
+                var page = $('#thumbnails-pagnation').find('.current').parent().index();
+
+                    
+                    if($(this).parent('li')){
+                        var page = $(this).parent('li').index() + 1;
+                        getImages(searchTerm,page);
+                    }
+                    if(event.target.parentNode.id == 'first-frame'){
+                        var page = 1;
+                        getImages(searchTerm,1);
+                    }
+                    if(event.target.parentNode.id == 'last-frame'){
+                        var page = MAX_PAGE;
+                        getImages(searchTerm,MAX_PAGE);
+                    }
+                    if(event.target.parentNode.id == 'prev-frame' ){
+                        console.log(page)
+                        getImages(searchTerm,page--);
+                    }
+                    if(event.target.parentNode.id == 'next-frame'  ){
+                        getImages(searchTerm,page++);
+                    }
+                    
+                    event.preventDefault();
+                });
+
+            }
             init = function () {
                 var oname = document.getElementById('description');
+
+                pagnation();
                 oname.style.display = 'none';
+                getImages(searchTerm,page);
                 getSearchValue();
-                getImages(settings.defaultSearchTerm);
         };
         return init();
 
