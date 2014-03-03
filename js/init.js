@@ -14,7 +14,6 @@
         },
         hidebox = function ($el) {
             $el.delay(settings.duration).fadeOut();
-            //console.log(settings.duration);
         },
         init = function () {
             var box = settings.element.find('.pop-up');
@@ -67,7 +66,7 @@
                 }, settings.animationDuration );
             }
             
-            currentSlide = carousel_elements.eq(count);
+            var currentSlide = carousel_elements.eq(count);
             currentSlide.addClass('current');
             $('#thumbnails li').eq(count).find('a').addClass('current');
 
@@ -129,7 +128,8 @@ function setOwnerText(image){
         var url = 'http://api.flickr.com/services/rest/',
             gallery = $(this),
             page = 1,
-            searchTerm = settings.defaultSearchTerm;
+            searchTerm = settings.defaultSearchTerm,
+            getSearchValue, getImages,pagnation, init;
 
         getSearchValue = function () {
             $('#search-submit').click(function (event) {
@@ -195,7 +195,6 @@ function setOwnerText(image){
                 $('#thumbnails-pagnation').on('click', 'a', function(event){
 
                 var page = $('#thumbnails-pagnation').find('.current').parent().index();
-
                     
                     if($(this).parent('li')){
                         page = $(this).parent('li').index() + 1;
@@ -206,13 +205,10 @@ function setOwnerText(image){
                         getImages(searchTerm,1);
                     }
                     if(event.target.parentNode.id == 'last-frame'){
-                        console.log( MAX_PAGE);
                         page = MAX_PAGE;
-
                         getImages(searchTerm,MAX_PAGE);
                     }
                     if(event.target.parentNode.id == 'prev-frame' ){
-                        console.log(page)
                         getImages(searchTerm,page--);
                     }
                     if(event.target.parentNode.id == 'next-frame'  ){
@@ -222,7 +218,7 @@ function setOwnerText(image){
                     event.preventDefault();
                 });
 
-            }
+            },
             init = function () {
                 var oname = document.getElementById('description');
 
@@ -230,7 +226,7 @@ function setOwnerText(image){
                 getImages(searchTerm,page);
                 getSearchValue();
                 //pagnation();
-        };
+            }
         return init();
 
     };
